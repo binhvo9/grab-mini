@@ -65,6 +65,18 @@
     display: flex;
     justify-content: center;
   }
+  .eli5 {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(94, 234, 212, 0.07);
+    border: 1px solid rgba(94, 234, 212, 0.25);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
+  .eli5 strong {
+    color: var(--accent);
+  }
   footer {
     text-align: center;
     color: var(--muted);
@@ -130,6 +142,16 @@ sequenceDiagram
     Trip->>Broker: publish TripCompleted
       </pre>
     </div>
+    <div class="eli5">
+      <strong>In plain English:</strong> You tap "Book ride" → the app
+      instantly quotes a price and shouts "who's nearby?" → the closest
+      driver gets a notification and taps "Accept" → you're both notified
+      "matched". While the trip runs, the driver's phone pings its location
+      every 4 seconds so your map updates live. When the driver taps
+      "Complete", the app calculates the final price and closes the trip.
+      Every step is just a message passed to the next person/system — like a
+      relay race.
+    </div>
   </section>
 
   <section>
@@ -173,6 +195,17 @@ flowchart TB
     BatchProc --> Serving[(Serving Layer - Analytics DB)]
       </pre>
     </div>
+    <div class="eli5">
+      <strong>In plain English:</strong> This is the "org chart" of the
+      system — who talks to whom. Both apps walk through one front door
+      (<strong>API Gateway</strong>). Behind that door, specialist teams each
+      do ONE job — Matching finds drivers, Pricing does fares, Trip keeps
+      records. Instead of calling each other directly for every update, they
+      pin notes to one shared notice board (<strong>Kafka</strong>). Anyone
+      interested — notifications, live dashboards, or end-of-day reporting —
+      reads the board at their own pace, so one slow team never jams up
+      everyone else.
+    </div>
   </section>
 
   <section>
@@ -208,6 +241,26 @@ flowchart LR
     Spark --> Warehouse[(Data Warehouse)]
     Warehouse --> RTDash
       </pre>
+    </div>
+    <div class="eli5">
+      <strong>In plain English:</strong> Same picture, with real product
+      names. <strong>Kong/Envoy</strong> is the front-door bouncer.
+      <strong>Kafka</strong> is the notice board — but now with 3 copies of
+      every note pinned in 3 different rooms so nothing's lost if one floods.
+      <strong>Redis</strong> is a super-fast phonebook answering "which
+      drivers are near here right now?". <strong>PostgreSQL</strong> is the
+      permanent filing cabinet for trips and payments — never allowed to
+      disappear. <strong>Flink</strong> reacts to the notice board instantly
+      (live maps/dashboards), while <strong>Spark</strong> processes
+      yesterday's notes overnight for management reports. Same data, two
+      speeds, two jobs.
+    </div>
+    <div class="eli5" style="margin-top:24px;">
+      <strong>Want the deep dive?</strong> The full
+      <a href="https://github.com/binhvo9/grab-mini#readme" target="_blank" style="color: var(--accent)">README</a>
+      covers trade-off analysis (with real-world examples), failure modes &
+      mitigation, capacity estimation, and a plain-English glossary
+      connecting every term used here.
     </div>
   </section>
 </main>
